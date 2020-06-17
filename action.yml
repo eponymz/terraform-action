@@ -1,0 +1,20 @@
+# action.yml
+name: 'Terraform Plan'
+description: 'Accepts path to terraform configurations to run commands within directory.'
+inputs:
+  TFPATH:
+    description: 'Path to terraform files.'
+    required: true
+  REGION:
+    description: 'Region to execute terraform commands against.'
+    required: true
+  ACTION:
+    description: 'Terraform action to perform.'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.TFPATH }}
+    - ${{ inputs.REGION }}
+    - ${{ inputs.ACTION }}
