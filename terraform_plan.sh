@@ -51,3 +51,4 @@ terraform validate
 [ $? -ne 0 ] && echo "Terraform command failed. Exiting.." && exit 1
 terraform $ACTION
 [ $? -ne 0 ] && echo "Terraform command failed. Exiting.." && exit 1
+exit 0
