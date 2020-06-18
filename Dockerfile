@@ -17,12 +17,4 @@ ADD *.sh /usr/local/bin/
 RUN chmod 755 /usr/local/bin/*.sh && \
     chown root:root /usr/local/bin/*.sh
 
-RUN useradd terraform && \
-    mkdir /home/terraform && \
-    chown terraform:terraform /home/terraform
-
-WORKDIR /home/terraform
-
-USER terraform
-
 ENTRYPOINT [ "/usr/local/bin/terraform_plan.sh" ]
