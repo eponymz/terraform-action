@@ -39,16 +39,16 @@ case $ACTION in
   ;;
 esac
 
-echo "ACTION is $ACTION"
+echo "ACTION is '$ACTION'"
 
 cd $TFPATH
 
 terraform init
-
+[ $? -ne 0 ] && echo "Terraform command failed. Exiting.."
 terraform fmt -check
-
+[ $? -ne 0 ] && echo "Terraform command failed. Exiting.."
 terraform validate
-
+[ $? -ne 0 ] && echo "Terraform command failed. Exiting.."
 terraform $ACTION
 ACTION_EXIT_CODE=$?
 

@@ -21,6 +21,8 @@ RUN useradd terraform && \
     mkdir /home/terraform && \
     chown terraform:terraform /home/terraform
 
+WORKDIR /home/terraform
+
 USER terraform
 
 ENTRYPOINT [ "/usr/local/bin/terraform_plan.sh" ]
