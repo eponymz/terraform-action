@@ -28,14 +28,14 @@ fi
 
 case $ACTION in
   plan)
-    ACTION="plan -lock=false -detailed-exitcode"
+    ACTION="plan -lock=false"
   ;;
   apply)
     ACTION="apply -auto-approve"
   ;;
   *)
     echo "action not specificed, defaulting to plan"
-    ACTION="plan -lock=false -detailed-exitcode"
+    ACTION="plan -lock=false"
   ;;
 esac
 
