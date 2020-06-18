@@ -44,12 +44,10 @@ echo "ACTION is '$ACTION'"
 cd $TFPATH
 
 terraform init
-[ $? -ne 0 ] && echo "Terraform command failed. Exiting.."
+[ $? -ne 0 ] && echo "Terraform command failed. Exiting.." && exit 1
 terraform fmt -check
-[ $? -ne 0 ] && echo "Terraform command failed. Exiting.."
+[ $? -ne 0 ] && echo "Terraform command failed. Exiting.." && exit 1
 terraform validate
-[ $? -ne 0 ] && echo "Terraform command failed. Exiting.."
+[ $? -ne 0 ] && echo "Terraform command failed. Exiting.." && exit 1
 terraform $ACTION
-ACTION_EXIT_CODE=$?
-
-exit $ACTION_EXIT_CODE
+[ $? -ne 0 ] && echo "Terraform command failed. Exiting.." && exit 1
