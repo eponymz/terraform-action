@@ -46,7 +46,7 @@ cd $TFPATH
 terraform init
 [ $? -ne 0 ] && echo "Terraform initialization failed. Exiting.." && exit 1
 terraform fmt -check
-[ $? -ne 0 ] && echo "Unformatted Terraform files found. Please run 'terraform fmt' from within the changed directory and push the changes. Exiting.." && exit 1
+[ $? -ne 0 ] && echo "Unformatted Terraform files found. Please run 'terraform fmt' from within '$TFPATH' and push the changes. Exiting.." && exit 1
 terraform validate
 [ $? -ne 0 ] && echo "Terraform validation failed. Please run 'terraform validate' locally and resolve the issues mentioned. Exiting.." && exit 1
 terraform $ACTION
