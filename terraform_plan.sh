@@ -73,14 +73,18 @@ ACTION_EXIT_CODE=$?
 if [ $ACTION_EXIT_CODE -eq 1 ]; then
   EXITCODE=1
 elif [ $ACTION_EXIT_CODE -eq 2 ] && [[ $ACTION =~ plan ]]; then
-  for i in $(tf show -json plan.tmp | jq -r ".resource_changes[].change.actions[]"); do
+  for i in $(terraform show -json plan.tmp | jq -r ".resource_changes[].change.actions[]"); do
     if [ $i = "delete" ]; then
       DESTRUCTIVE_PLAN=true
       break
     fi
   done
 
-  [ $DESTRUCTIVE_PLAN = "true" ] && destructive_plan $TFPATH
+  if [ $DESTRUCTIVE_PLAN = "true" ]; then
+    destructive_plan $TFPATH
+  else
+    EXITCODE=0
+  fi
 else
   EXITCODE=0
 fi
