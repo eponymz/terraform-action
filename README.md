@@ -16,7 +16,7 @@ Custom action to handle multi-level terraform repositories.
 
 **Required** The action for Terraform to perform. Does not default.
 
-### `GITHUB_API_TOKEN`
+### `ACCESS_TOKEN`
 
 **Required** Used for authenticating to the GitHub API for commenting on PRs. Currently, if destructive actions are present in the Terraform plan, the action will comment such on the PR with reference to the `$TFPATH` to ensure these changes are intended.
 
@@ -36,7 +36,7 @@ with:
   TFPATH: 'staging/iam/'
   REGION: 'us-east-1'
   ACTION: 'plan'
-  GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
   REPO_OWNER: 'isabey'
   REPO_NAME: 'terraform-action'
 ```
