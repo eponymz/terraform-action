@@ -6,7 +6,8 @@ ACTION=$3
 ACCESS_TOKEN=$4
 REPO_OWNER=$5
 REPO_NAME=$6
-PR_NUMBER=$("$GITHUB_EVENT_PATH" | jq -r ".pull_request.number")
+# PR_NUMBER=$("$GITHUB_EVENT_PATH" | jq -r ".pull_request.number")
+PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
 PR_URL="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues/${PR_NUMBER}/comments"
 
 destructive_plan () {
