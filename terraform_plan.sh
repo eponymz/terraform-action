@@ -11,9 +11,9 @@ PR_NUMBER=$(cat $GITHUB_EVENT_PATH | jq -r ".pull_request.number")
 PR_URL="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues/${PR_NUMBER}/comments"
 
 destructive_plan () {
-  COMMENT_BODY='{"body": "Destroy actions present in '$1'. Please review the related workflow execution to ensure this is intended!"}'
-  echo " Commenting on PR."
-  curl -s -H "Authorization: token ${ACCESS_TOKEN}" -X POST -d $COMMENT_BODY $PR_URL
+  COMMENT_BODY='{"body": "Destroy actions present in '$TFPATH'. Please review the related workflow execution to ensure this is intended!"}'
+  echo "Commenting on PR."
+  curl -H "Authorization: token ${ACCESS_TOKEN}" -X POST -d $COMMENT_BODY $PR_URL
   EXITCODE=0
 }
 
@@ -85,7 +85,7 @@ elif [ $ACTION_EXIT_CODE -eq 2 ] && [[ $ACTION =~ plan ]]; then
 
   if [[ $DESTRUCTIVE_PLAN = true ]]; then
     echo "Destructive changes detected!"
-    destructive_plan $TFPATH
+    destructive_plan
   else
     echo "No destructive changes detected!"
     EXITCODE=0
