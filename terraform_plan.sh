@@ -81,7 +81,7 @@ elif [ $ACTION_EXIT_CODE -eq 2 ] && [[ $ACTION =~ plan ]]; then
     fi
   done
 
-  if [ $DESTRUCTIVE_PLAN -eq "true" ]; then
+  if [ $DESTRUCTIVE_PLAN = true ]; then
     echo "Destructive changes detected!"
     destructive_plan $TFPATH
   else
