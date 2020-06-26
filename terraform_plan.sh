@@ -73,6 +73,7 @@ ACTION_EXIT_CODE=$?
 if [ $ACTION_EXIT_CODE -eq 1 ]; then
   EXITCODE=1
 elif [ $ACTION_EXIT_CODE -eq 2 ] && [[ $ACTION =~ plan ]]; then
+  echo "Changes present in the current terraform plan. Evaluating for destructive changes."
   for i in $(terraform show -json plan.tmp | jq -r ".resource_changes[].change.actions[]"); do
     if [ $i = "delete" ]; then
       DESTRUCTIVE_PLAN=true
@@ -80,9 +81,11 @@ elif [ $ACTION_EXIT_CODE -eq 2 ] && [[ $ACTION =~ plan ]]; then
     fi
   done
 
-  if [ $DESTRUCTIVE_PLAN = "true" ]; then
+  if [ $DESTRUCTIVE_PLAN -eq "true" ]; then
+    echo "Destructive changes detected!"
     destructive_plan $TFPATH
   else
+    echo "No destructive changes detected!"
     EXITCODE=0
   fi
 else
