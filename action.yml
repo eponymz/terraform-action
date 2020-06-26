@@ -1,20 +1,24 @@
 # action.yml
-name: 'Terraform Plan'
-description: 'Accepts path to terraform configurations to run commands within directory.'
+name: "Terraform Plan"
+description: "Accepts path to terraform configurations to run commands within directory."
 inputs:
   TFPATH:
-    description: 'Path to terraform files.'
+    description: "Path to terraform files."
     required: true
   REGION:
-    description: 'Region to execute terraform commands against.'
+    description: "Region to execute terraform commands against."
     required: true
   ACTION:
-    description: 'Terraform action to perform.'
+    description: "Terraform action to perform."
+    required: true
+  GITHUB_API_TOKEN:
+    description: "Token used to authenticate to the GitHub API for commenting on PRs."
     required: true
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: "docker"
+  image: "Dockerfile"
   args:
     - ${{ inputs.TFPATH }}
     - ${{ inputs.REGION }}
     - ${{ inputs.ACTION }}
+    - ${{ inputs.GITHUB_API_TOKEN }}

@@ -3,6 +3,7 @@
 TFPATH=$1
 REGION=$2
 ACTION=$3
+GITHUB_API_TOKEN=$4
 PR_NUMBER=$("$GITHUB_EVENT_PATH" | jq -r ".pull_request.number")
 REPO_OWNER="cogni-dev"
 REPO_NAME="infra"
