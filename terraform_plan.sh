@@ -4,9 +4,9 @@ TFPATH=$1
 REGION=$2
 ACTION=$3
 GITHUB_API_TOKEN=$4
+REPO_OWNER=$5
+REPO_NAME=$6
 PR_NUMBER=$("$GITHUB_EVENT_PATH" | jq -r ".pull_request.number")
-REPO_OWNER="cogni-dev"
-REPO_NAME="infra"
 PR_URL="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues/${PR_NUMBER}/comments"
 
 destructive_plan () {

@@ -14,6 +14,12 @@ inputs:
   GITHUB_API_TOKEN:
     description: "Token used to authenticate to the GitHub API for commenting on PRs."
     required: true
+  REPO_OWNER:
+    description: "Used to build the PR URL dynamically."
+    required: true
+  REPO_NAME:
+    description: "Used to build the PR URL dynamically."
+    required: true
 runs:
   using: "docker"
   image: "Dockerfile"
@@ -22,3 +28,5 @@ runs:
     - ${{ inputs.REGION }}
     - ${{ inputs.ACTION }}
     - ${{ inputs.GITHUB_API_TOKEN }}
+    - ${{ inputs.REPO_OWNER }}
+    - ${{ inputs.REPO_NAME }}
