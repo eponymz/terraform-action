@@ -6,8 +6,8 @@ ACTION=$3
 ACCESS_TOKEN=$4
 REPO_OWNER=$5
 REPO_NAME=$6
-# PR_NUMBER=$("$GITHUB_EVENT_PATH" | jq -r ".pull_request.number")
-PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+PR_NUMBER=$(cat $GITHUB_EVENT_PATH | jq -r ".pull_request.number")
+# PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
 PR_URL="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues/${PR_NUMBER}/comments"
 
 destructive_plan () {
@@ -56,6 +56,7 @@ case $ACTION in
 esac
 
 echo "ACTION is '$ACTION'"
+echo "Executing 'terraform $ACTION' for PR: #$PR_NUMBER."
 
 cd $TFPATH
 
@@ -82,7 +83,7 @@ elif [ $ACTION_EXIT_CODE -eq 2 ] && [[ $ACTION =~ plan ]]; then
     fi
   done
 
-  if [ $DESTRUCTIVE_PLAN = true ]; then
+  if [[ $DESTRUCTIVE_PLAN = true ]]; then
     echo "Destructive changes detected!"
     destructive_plan $TFPATH
   else
