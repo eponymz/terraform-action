@@ -12,13 +12,14 @@ PR_URL="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues/${PR_NUMB
 destructive_plan () {
   COMMENT_BODY='{"body": "Destroy actions present in \"'$TFPATH'\". Please review the workflow execution to ensure this is intended!"}'
   echo "Commenting on PR at '$PR_URL'."
-  curl -S -H "Authorization: token ${ACCESS_TOKEN}" -X POST -d "$COMMENT_BODY" $PR_URL
+  curl -s -S -H "Authorization: token ${ACCESS_TOKEN}" -X POST -d "$COMMENT_BODY" $PR_URL
   if test $? -gt 0; then
     EXITCODE=1
     echo "Failed to comment on PR. Failing job."
   else
     EXITCODE=0
   fi
+  unset DESTRUCTIVE_PLAN
 }
 
 if [ -z "$REGION" ] || [ -z "$TFPATH" ] || [ -z "$ACTION" ] || [ -z "$ACCESS_TOKEN" ] || [ -z "$REPO_OWNER" ] || [ -z "$REPO_NAME" ] ; then
