@@ -6,7 +6,7 @@ RUN pacman -Sy --noconfirm aws-cli jq grep git awk unzip kubectl python-pip jq y
     rm -rf /var/cache/pacman/
 
 # Install latest terraform
-RUN VERSION='0.12.26' && \
+RUN VERSION='0.12.28' && \
     curl -sL "https://releases.hashicorp.com/terraform/$VERSION/terraform_${VERSION}_linux_amd64.zip" -o terraform.zip && \
     unzip terraform.zip && rm terraform.zip && \
     chmod 755 /terraform && \
