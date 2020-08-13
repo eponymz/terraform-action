@@ -10,7 +10,6 @@ RUN pacman -Sy --noconfirm aws-cli grep git awk unzip kubectl jq yq curl && \
 #     TF_RELEASES="https://releases.hashicorp.com/terraform/index.json" && \
 #     LATEST=$(curl -s $TF_RELEASES | jq -r '.versions[].builds[].url' | egrep $VERSION_REGEX | sort -V | tail -1) && \
 #     curl -sL $LATEST -o terraform.zip
-
 #############################################################################
 # TEMPORARILY HARD CODING TERRAFORM VERSION UNTIL PROPER UPGRADE CAN HAPPEN #
 #############################################################################
