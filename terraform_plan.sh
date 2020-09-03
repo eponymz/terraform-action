@@ -46,6 +46,8 @@ fi
 
 if [ -z "$IS_MANUAL" ]; then
   echo "Not manual execution"
+else
+  echo "Manual execution"
 fi
 
 echo "Getting caller identity"
