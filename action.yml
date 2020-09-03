@@ -20,6 +20,12 @@ inputs:
   REPO_NAME:
     description: "Used to build the PR URL dynamically."
     required: true
+  IS_MANUAL:
+    description: "Used to define if this is a manual run."
+    required: false
+  SLACK_WEBHOOK_URL:
+    description: "Used in tandem with IS_MANUAL. Used to alert on destructive actions."
+    required: false
 runs:
   using: "docker"
   image: "Dockerfile"
@@ -30,3 +36,5 @@ runs:
     - ${{ inputs.ACCESS_TOKEN }}
     - ${{ inputs.REPO_OWNER }}
     - ${{ inputs.REPO_NAME }}
+    - ${{ inputs.IS_MANUAL }}
+    - ${{ inputs.SLACK_WEBHOOK_URL }}
