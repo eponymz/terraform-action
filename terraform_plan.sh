@@ -44,6 +44,10 @@ if [ -z "$REGION" ] || [ -z "$TFPATH" ] || [ -z "$ACTION" ] || [ -z "$ACCESS_TOK
   exit 1
 fi
 
+if [ -z "$IS_MANUAL" ]; then
+  echo "Not manual execution"
+fi
+
 echo "Getting caller identity"
 AWS_CALLER_IDENTITY=$(aws sts get-caller-identity --region $REGION)
 ACCOUNT_NUMBER=$(echo $AWS_CALLER_IDENTITY | jq -r .Account)
