@@ -28,10 +28,19 @@ Custom action to handle multi-level terraform repositories.
 
 **Required** Used for dynamically building the PR URL.
 
+### `IS_MANUAL`
+
+**Optional** Used for internal handling of the destructive plan function.
+
+### `SLACK_WEBHOOK_URL`
+
+**Optional** Used in tandem with `IS_MANUAL`. Will send the destructive plan message to Slack if present.
+
 ## Example usage
 
+- Non-manual execution.
 ```yaml
-uses: isabey-cogni/terraform-action@v1
+uses: isabey-cogni/terraform-action@latest
 with:
   TFPATH: 'staging/iam/'
   REGION: 'us-east-1'
@@ -39,4 +48,18 @@ with:
   ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
   REPO_OWNER: 'isabey'
   REPO_NAME: 'terraform-action'
+```
+
+- Manual execution.
+```yaml
+uses: isabey-cogni/terraform-action@latest
+with:
+  TFPATH: 'staging/iam/'
+  REGION: 'us-east-1'
+  ACTION: 'plan'
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  REPO_OWNER: 'isabey'
+  REPO_NAME: 'terraform-action'
+  IS_MANUAL: true
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 ```
