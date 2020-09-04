@@ -9,22 +9,27 @@ REPO_NAME=$6
 IS_MANUAL=$7
 SLACK_WEBHOOK_URL=$8
 
+SLACK_MESSAGE_BODY='{
+  "text":"Destroy actions present in \"'$TFPATH'\". Please review the workflow execution at '$ACTIONS_URL' to ensure this is intended!"
+}'
+COMMENT_BODY='{
+  "body": "Destroy actions present in \"'$TFPATH'\". Please review the workflow execution to ensure this is intended!"
+}'
+
 PR_NUMBER=$(cat $GITHUB_EVENT_PATH | jq -r ".pull_request.number")
 PR_URL="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues/${PR_NUMBER}/comments"
 ACTIONS_URL="https://github.com/${REPO_OWNER}/${REPO_NAME}/actions"
 
 destructive_plan () {
   if [[ $IS_MANUAL = true ]]; then
-    SLACK_MESSAGE_BODY='{"text":"Destroy actions present in \"'$TFPATH'\". Please review the workflow execution at '$ACTIONS_URL' to ensure this is intended!"}'
     echo "Sending Slack Message."
-    CURL_COMMAND=$(curl -H "Content-type: application/json" -X POST -d "$SLACK_MESSAGE_BODY" $SLACK_WEBHOOK_URL)
+    CURL_COMMAND=$(curl -sSw "%{response_code}" -H "Content-type: application/json" -X POST -d "$SLACK_MESSAGE_BODY" $SLACK_WEBHOOK_URL)
   else
-    COMMENT_BODY='{"body": "Destroy actions present in \"'$TFPATH'\". Please review the workflow execution to ensure this is intended!"}'
     echo "Commenting on PR at '$PR_URL'."
-    CURL_PARAMS=$(curl -s -S -H \"Authorization: token ${ACCESS_TOKEN}\" -X POST -d \"$COMMENT_BODY\" $PR_URL)
+    CURL_COMMAND=$(curl -sSw "%{response_code}" -H \"Authorization: token ${ACCESS_TOKEN}\" -X POST -d \"$COMMENT_BODY\" $PR_URL)
   fi
-  curl $CURL_PARAMS
-  if test $? -gt 0; then
+  echo "$CURL_COMMAND"
+  if test $response_code -ne 0; then
     EXITCODE=1
     echo "Failed to notify of destructive changes. Failing job."
   else
