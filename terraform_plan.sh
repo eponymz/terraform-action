@@ -18,16 +18,14 @@ COMMENT_BODY='{"body": "Destroy actions present in \"'$TFPATH'\". Please review 
 
 destructive_plan () {
   local CURL_COMMAND
-  local CURL_CODE
   if [[ $IS_MANUAL = true ]]; then
     echo "Sending Slack Message."
-    CURL_COMMAND=$(curl -f -w "%{response_code}" -sS -H "Content-type: application/json" -X POST -d "$SLACK_MESSAGE_BODY" $SLACK_WEBHOOK_URL)
+    CURL_COMMAND=$(curl -o /dev/null -w "%{response_code}" -sS -H "Content-type: application/json" -X POST -d "$SLACK_MESSAGE_BODY" $SLACK_WEBHOOK_URL)
   else
     echo "Commenting on PR at '$PR_URL'."
-    CURL_COMMAND=$(curl -f -w "%{response_code}" -sS -H "Authorization: token ${ACCESS_TOKEN}" -X POST -d "$COMMENT_BODY" $PR_URL)
+    CURL_COMMAND=$(curl -o /dev/null -w "%{response_code}" -sS -H "Authorization: token ${ACCESS_TOKEN}" -X POST -d "$COMMENT_BODY" $PR_URL)
   fi
-  CURL_CODE="$CURL_COMMAND | tail -n 1"
-  if [ $CURL_CODE != "200" -o $CURL_CODE != "201" ]; then # Slack sends 200 on successful call. GitHub sends 201 on successful call.
+  if [ $CURL_COMMAND != "200" -o $CURL_COMMAND != "201" ]; then # Slack sends 200 on successful call. GitHub sends 201 on successful call.
     EXITCODE=1
     echo "Failed to notify of destructive changes. Failing job."
   else
