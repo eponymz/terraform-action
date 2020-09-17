@@ -17,6 +17,7 @@ SLACK_MESSAGE_BODY='{"text":"Destroy actions present in \"'$TFPATH'\". Please re
 COMMENT_BODY='{"body": "Destroy actions present in \"'$TFPATH'\". Please review the workflow execution to ensure this is intended!"}'
 
 destructive_plan () {
+  local CURL_COMMAND
   if [[ $IS_MANUAL = true ]]; then
     echo "Sending Slack Message."
     CURL_COMMAND=$(curl -sSw "%{response_code}" -H "Content-type: application/json" -X POST -d "$SLACK_MESSAGE_BODY" $SLACK_WEBHOOK_URL)
@@ -25,7 +26,7 @@ destructive_plan () {
     CURL_COMMAND=$(curl -sSw "%{response_code}" -H "Authorization: token ${ACCESS_TOKEN}" -X POST -d "$COMMENT_BODY" $PR_URL)
   fi
   echo "$CURL_COMMAND"
-  if [ $response_code -eq 200 -o $response_code -eq 201 ]; then # Slack sends 200 on successful call. GitHub sends 201 on successful call.
+  if [ $CURL_COMMAND -eq 200 -o $CURL_COMMAND -eq 201 ]; then # Slack sends 200 on successful call. GitHub sends 201 on successful call.
     EXITCODE=0
   else
     EXITCODE=1
