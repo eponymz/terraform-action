@@ -25,7 +25,7 @@ destructive_plan () {
     CURL_COMMAND=$(curl -sSw "%{response_code}" -H \"Authorization: token ${ACCESS_TOKEN}\" -X POST -d \"$COMMENT_BODY\" $PR_URL)
   fi
   echo "$CURL_COMMAND"
-  if test $response_code != "200"; then
+  if test $response_code != 200; then
     EXITCODE=1
     echo "Failed to notify of destructive changes. Failing job."
   else
