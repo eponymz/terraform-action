@@ -22,10 +22,10 @@ destructive_plan () {
     CURL_COMMAND=$(curl -sSw "%{response_code}" -H "Content-type: application/json" -X POST -d "$SLACK_MESSAGE_BODY" $SLACK_WEBHOOK_URL)
   else
     echo "Commenting on PR at '$PR_URL'."
-    CURL_COMMAND=$(curl -sSw "%{response_code}" -H \"Authorization: token ${ACCESS_TOKEN}\" -X POST -d \"$COMMENT_BODY\" $PR_URL)
+    CURL_COMMAND=$(curl -sSw "%{response_code}" -H "Authorization: token ${ACCESS_TOKEN}" -X POST -d "$COMMENT_BODY" $PR_URL)
   fi
   echo "$CURL_COMMAND"
-  if test $response_code = "200"; then
+  if [ "$response_code" = "200" ]; then
     EXITCODE=0
   else
     EXITCODE=1
