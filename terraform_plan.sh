@@ -20,16 +20,16 @@ destructive_plan () {
   local CURL_COMMAND
   if [[ $IS_MANUAL = true ]]; then
     echo "Sending Slack Message."
-    CURL_COMMAND=$(curl -sSw "%{response_code}" -H "Content-type: application/json" -X POST -d "$SLACK_MESSAGE_BODY" $SLACK_WEBHOOK_URL)
+    CURL_COMMAND=$(curl -f -w "%{response_code}" -sS -H "Content-type: application/json" -X POST -d "$SLACK_MESSAGE_BODY" $SLACK_WEBHOOK_URL)
   else
     echo "Commenting on PR at '$PR_URL'."
-    CURL_COMMAND=$(curl -sSw "%{response_code}" -H "Authorization: token ${ACCESS_TOKEN}" -X POST -d "$COMMENT_BODY" $PR_URL)
+    CURL_COMMAND=$(curl -f -w "%{response_code}" -sS -H "Authorization: token ${ACCESS_TOKEN}" -X POST -d "$COMMENT_BODY" $PR_URL)
   fi
-  if [ $CURL_COMMAND -eq 200 ] || [ $CURL_COMMAND -eq 201 ]; then # Slack sends 200 on successful call. GitHub sends 201 on successful call.
-    EXITCODE=0
-  else
+  if [ $CURL_COMMAND -ne 200 -o $CURL_COMMAND -ne 201 ]; then # Slack sends 200 on successful call. GitHub sends 201 on successful call.
     EXITCODE=1
     echo "Failed to notify of destructive changes. Failing job."
+  else
+    EXITCODE=0
   fi
   unset DESTRUCTIVE_PLAN
 }
