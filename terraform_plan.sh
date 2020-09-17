@@ -25,11 +25,11 @@ destructive_plan () {
     echo "Commenting on PR at '$PR_URL'."
     CURL_COMMAND=$(curl -s -o /dev/null -w "%{response_code}" -H "Authorization: token ${ACCESS_TOKEN}" -X POST -d "$COMMENT_BODY" $PR_URL)
   fi
-  if [ $CURL_COMMAND != "200" -o $CURL_COMMAND != "201" ]; then # Slack sends 200 on successful call. GitHub sends 201 on successful call.
+  if [ $CURL_COMMAND -eq 200 -o $CURL_COMMAND -eq 201 ]; then # Slack sends 200 on successful call. GitHub sends 201 on successful call.
+    EXITCODE=0
+  else
     EXITCODE=1
     echo "Failed to notify of destructive changes. Failing job."
-  else
-    EXITCODE=0
   fi
   unset DESTRUCTIVE_PLAN
 }
