@@ -26,7 +26,7 @@ destructive_plan () {
     CURL_COMMAND=$(curl -sSw "%{response_code}" -H "Authorization: token ${ACCESS_TOKEN}" -X POST -d "$COMMENT_BODY" $PR_URL)
   fi
   echo "$CURL_COMMAND"
-  if [ $CURL_COMMAND -eq 200 -o $CURL_COMMAND -eq 201 ]; then # Slack sends 200 on successful call. GitHub sends 201 on successful call.
+  if [ "$CURL_COMMAND" = "200" ] || [ "$CURL_COMMAND" = "201" ]; then # Slack sends 200 on successful call. GitHub sends 201 on successful call.
     EXITCODE=0
   else
     EXITCODE=1
