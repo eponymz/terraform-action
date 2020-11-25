@@ -11,10 +11,10 @@ SLACK_WEBHOOK_URL=$8
 
 PR_NUMBER=$(cat $GITHUB_EVENT_PATH | jq -r ".pull_request.number")
 PR_URL="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues/${PR_NUMBER}/comments"
-ACTIONS_URL="https://github.com/${REPO_OWNER}/${REPO_NAME}/actions"
+ACTIONS_URL="https://github.com/${REPO_OWNER}/${REPO_NAME}/runs/${GITHUB_RUN_ID}?check_suite_focus=true"
 
-SLACK_MESSAGE_BODY='{"text":"Destroy actions present in \"'$TFPATH'\". Please review the workflow execution at '$ACTIONS_URL' to ensure this is intended!"}'
-COMMENT_BODY='{"body": "Destroy actions present in \"'$TFPATH'\". Please review the workflow execution to ensure this is intended!"}'
+SLACK_MESSAGE_BODY='{"text":"Destroy actions present in \"'$TFPATH'\". Please review the [workflow execution]('$ACTIONS_URL') to ensure this is intended!"}'
+COMMENT_BODY='{"body": "Destroy actions present in \"'$TFPATH'\". Please review the [workflow execution]('$ACTIONS_URL') to ensure this is intended!"}'
 
 destructive_plan () {
   local CURL_COMMAND
