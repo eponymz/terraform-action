@@ -9,15 +9,24 @@ REPO_NAME=$6
 IS_MANUAL=$7
 SLACK_WEBHOOK_URL=$8
 
-PR_NUMBER=$(cat $GITHUB_EVENT_PATH | jq -r ".pull_request.number")
-PR_URL="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues/${PR_NUMBER}/comments"
-ACTIONS_URL="https://github.com/${REPO_OWNER}/${REPO_NAME}/runs/${GITHUB_RUN_ID}?check_suite_focus=true"
+REPO_API_BASE_URL="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}"
 
-SLACK_MESSAGE_BODY='{"text":"Destroy actions present in \"'$TFPATH'\". Please review the [workflow execution]('$ACTIONS_URL') to ensure this is intended!"}'
-COMMENT_BODY='{"body": "Destroy actions present in \"'$TFPATH'\". Please review the [workflow execution]('$ACTIONS_URL') to ensure this is intended!"}'
+PR_NUMBER=$(cat $GITHUB_EVENT_PATH | jq -r ".pull_request.number")
+PR_URL="${REPO_API_BASE_URL}/issues/${PR_NUMBER}/comments"
+
+RUN_URL="${REPO_API_BASE_URL}/actions/runs/${GITHUB_RUN_ID}"
+
+isDestructivePrep () {
+  GITHUB_CHECK_SUITE_ID=$(curl -s -H "Authorization: token ${ACCESS_TOKEN}" $RUN_URL | jq -r ".check_suite_id")
+  ACTIONS_URL=$(curl -s -H "Authorization: token ${ACCESS_TOKEN}" "${REPO_API_BASE_URL}/check-suites/${GITHUB_CHECK_SUITE_ID}/check-runs" | jq -r '.check_runs[].html_url')
+  
+  SLACK_MESSAGE_BODY='{"text":"Destroy actions present in \"'$TFPATH'\". Please review the [workflow execution]('$ACTIONS_URL') to ensure this is intended!"}'
+  COMMENT_BODY='{"body": "Destroy actions present in \"'$TFPATH'\". Please review the [workflow execution]('$ACTIONS_URL') to ensure this is intended!"}'
+}
 
 destructive_plan () {
   local CURL_COMMAND
+  isDestructivePrep
   if [[ $IS_MANUAL = true ]]; then
     echo "Sending Slack Message."
     CURL_COMMAND=$(curl -s -o /dev/null -w "%{response_code}" -H "Content-type: application/json" -X POST -d "$SLACK_MESSAGE_BODY" $SLACK_WEBHOOK_URL)
