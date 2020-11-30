@@ -7,6 +7,8 @@ Custom action to handle multi-level terraform repositories.
     1. This project assumes that AWS credentials are present when executing Terraform commands.
     2. [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) can be used to configured credentials within a job.
 
+---
+
 ## Inputs
 > Click input variable to nav to description
 
@@ -47,6 +49,8 @@ Used for internal handling of the destructive plan function.
 
 ### `SLACK_WEBHOOK_URL`
 Used in tandem with `IS_MANUAL`. Will send the destructive plan message to Slack if present.
+
+---
 
 ## Example usage
 
