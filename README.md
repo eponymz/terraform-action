@@ -4,8 +4,8 @@ Custom action to handle multi-level terraform repositories.
 
 ### Things to note
 1. This repository does **_NOT_** handle configuring your AWS credentials for terraform.
-1. This project assumes that AWS credentials are present when executing Terraform commands.
-    1. [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) can be used to configured credentials within a job.
+    1. This project assumes that AWS credentials are present when executing Terraform commands.
+    2. [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) can be used to configured credentials within a job.
 
 ## Inputs
 
