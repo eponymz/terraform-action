@@ -2,6 +2,11 @@
 
 Custom action to handle multi-level terraform repositories.
 
+### Things to note
+1. This repository does **_NOT_** handle configuring your AWS credentials for terraform.
+1. This project assumes that AWS credentials are present when executing Terraform commands.
+    1. [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) can be used to configured credentials within a job.
+
 ## Inputs
 
 ### `TFPATH`
@@ -18,7 +23,7 @@ Custom action to handle multi-level terraform repositories.
 
 ### `ACCESS_TOKEN`
 
-**Required** Used for authenticating to the GitHub API for commenting on PRs. Currently, if destructive actions are present in the Terraform plan, the action will comment such on the PR with reference to the `$TFPATH` to ensure these changes are intended.
+**Required** Used for authenticating to the GitHub API for commenting on PRs. Currently, if destructive actions are present in the Terraform plan, the action will comment such on the PR with reference to the `$TFPATH` and a link to the execution of the workflow to ensure these changes are intended.
 
 ### `REPO_OWNER`
 
