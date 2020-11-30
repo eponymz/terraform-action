@@ -8,38 +8,45 @@ Custom action to handle multi-level terraform repositories.
     2. [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) can be used to configured credentials within a job.
 
 ## Inputs
+> Click input variable to nav to description
 
+| Input | Required |
+| ----- | -------- |
+| [`TFPATH`](#TFPATH) | yes |
+| [`REGION`](#REGION) | yes |
+| [`ACTION`](#ACTION) | yes |
+| [`ACCESS_TOKEN`](#ACCESS_TOKEN) | yes |
+| [`REPO_OWNER`](#REPO_OWNER) | yes |
+| [`REPO_NAME`](#REPO_NAME) | yes |
+| [`IS_MANUAL`](#IS_MANUAL) | optional |
+| [`SLACK_WEBHOOK_URL`](#SLACK_WEBHOOK_URL) | required if `IS_MANUAL` is `true` |
+
+---
+
+## Descriptions
 ### `TFPATH`
-
-**Required** The path/to/terraform configuration files. Does not default.
+The path/to/terraform configuration files. Does not default.
 
 ### `REGION`
-
-**Required** The AWS region to perform Terraform commands against. Does not default.
+The AWS region to perform Terraform commands against. Does not default.
 
 ### `ACTION`
-
-**Required** The action for Terraform to perform. Does not default.
+The action for Terraform to perform. Does not default.
 
 ### `ACCESS_TOKEN`
-
-**Required** Used for authenticating to the GitHub API for commenting on PRs. Currently, if destructive actions are present in the Terraform plan, the action will comment such on the PR with reference to the `$TFPATH` and a link to the execution of the workflow to ensure these changes are intended.
+Used for authenticating to the GitHub API for commenting on PRs. Currently, if destructive actions are present in the Terraform plan, the action will comment such on the PR with reference to the `$TFPATH` and a link to the execution of the workflow to ensure these changes are intended.
 
 ### `REPO_OWNER`
-
-**Required** Used for dynamically building the PR URL.
+Used for dynamically building the PR URL.
 
 ### `REPO_NAME`
-
-**Required** Used for dynamically building the PR URL.
+Used for dynamically building the PR URL.
 
 ### `IS_MANUAL`
-
-**Optional** Used for internal handling of the destructive plan function.
+Used for internal handling of the destructive plan function.
 
 ### `SLACK_WEBHOOK_URL`
-
-**Optional** Used in tandem with `IS_MANUAL`. Will send the destructive plan message to Slack if present.
+Used in tandem with `IS_MANUAL`. Will send the destructive plan message to Slack if present.
 
 ## Example usage
 
