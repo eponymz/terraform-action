@@ -2,7 +2,7 @@ FROM archlinux/base
 # Arch tracks changes in their package manager at the same rate as brew on mac does or at least is very close
 
 # This should be arch to get on latest
-RUN pacman -Sy --noconfirm aws-cli grep git awk unzip kubectl jq yq curl && \
+RUN pacman -Syu --noconfirm aws-cli grep git awk unzip kubectl jq yq curl && \
     rm -rf /var/cache/pacman/
 
 # Download latest terraform zip
